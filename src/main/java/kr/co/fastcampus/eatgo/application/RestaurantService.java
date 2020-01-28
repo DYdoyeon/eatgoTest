@@ -39,4 +39,8 @@ public class RestaurantService {
         return restaurants;
         
     }
+
+    public void addRestaurant(Restaurant restaurant) {
+
+    }
 }

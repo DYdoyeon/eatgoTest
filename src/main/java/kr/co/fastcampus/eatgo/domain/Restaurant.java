@@ -5,9 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Restaurant {
-    private final String name;
-    private final String address;
-    private final Long id;
+    private String name;
+    private String address;
+    private Long id;
     private List<MenuItem> menuItems=new ArrayList<MenuItem>();
 
     public Restaurant(Long id, String name, String address) {
@@ -37,6 +37,9 @@ public class Restaurant {
     }
     public List<MenuItem> getMenuItems(){
         return menuItems;
+    }
+
+    public Restaurant() {
     }
 
     public void setMenuItems(List<MenuItem> menuItems) {
