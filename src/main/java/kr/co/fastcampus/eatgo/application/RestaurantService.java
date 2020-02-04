@@ -43,8 +43,8 @@ public class RestaurantService {
 
     public Restaurant addRestaurant(Restaurant restaurant) {
 
-        // restaurant.setId(1234L);
-        //return new restaurant(1234L,restaurant.getName(),restaurant.getAddress();
+       // restaurant.setId(1234L);
+       // return new Restaurant(1234L, restaurant.getName(), restaurant.getAddress());
         return restaurantRepository.save(restaurant);
     }
 

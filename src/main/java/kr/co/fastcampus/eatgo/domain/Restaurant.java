@@ -1,6 +1,8 @@
 package kr.co.fastcampus.eatgo.domain;
 
 
+import lombok.*;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -10,9 +12,19 @@ import java.util.List;
 
 
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Restaurant {
     private String name;
     private String address;
+
+ //   private String regionName;
+//    private String categoryName;
+  //  private String category;
+
 
     @Id
     @GeneratedValue
@@ -21,16 +33,7 @@ public class Restaurant {
     @Transient
     private List<MenuItem> menuItems=new ArrayList<MenuItem>();
 
-    public void setId(long id)
-    {
-        this.id = id;
-    }
 
-    public void setName(String name){
-        this.name = name;
-
-
-    }
     public Restaurant(String name, String address) {
         this.address = address;
         this.name = name;
@@ -43,32 +46,17 @@ public class Restaurant {
 
     }
 
-    public String getName() {
-        return name;
-    }
 
     public String getInformation() {
         return name + " in "+address;
     }
-    public String getAddress() {
-        return address;
-    }
-
-    public Long getId(){
-        return id;
-    }
     public void addMenuItem(MenuItem menuItem) {
+
         menuItems.add(menuItem);
     }
 
-    public List<MenuItem> getMenuItems(){
-        return menuItems;
-    }
-
-    public Restaurant() {
-    }
-
     public void setMenuItems(List<MenuItem> menuItems) {
+        this.menuItems = new ArrayList<>();
         for(MenuItem menuItem : menuItems){
             addMenuItem(menuItem);
         }
