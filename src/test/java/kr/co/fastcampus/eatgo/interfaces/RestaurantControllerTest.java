@@ -24,6 +24,8 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringRunner.class)
@@ -38,7 +40,7 @@ public class RestaurantControllerTest {
 
     @Test
     public void list() throws Exception {
-        List<Restaurant> restaurants = new ArrayList<>();
+        final List<Restaurant> restaurants = new ArrayList<>();
         restaurants.add(new Restaurant(1004L,"Bob zip","Seoul"));
 
 
@@ -56,10 +58,10 @@ public class RestaurantControllerTest {
     }
     @Test
     public void detail() throws Exception{
-        Restaurant restaurant1 = new Restaurant(1004L,"Bob Zip","Seoul");
+        final Restaurant restaurant1 = new Restaurant(1004L,"Bob Zip","Seoul");
         restaurant1.addMenuItem(new MenuItem("Kimchi"));
 
-        Restaurant restaurant2 = new Restaurant(2020L,"Cyber Food","Seoul");
+        final Restaurant restaurant2 = new Restaurant(2020L,"Cyber Food","Seoul");
      //   restaurant2.addMenuItem(new MenuItem("Kimchi"));
 
         given(restaurantService.getRestaurant(1004L)).willReturn(restaurant1);
@@ -105,6 +107,15 @@ public class RestaurantControllerTest {
                 .andExpect(header().string("location","/restaurants/1234"))
                 .andExpect(content().string("{}"));
         verify(restaurantService).addRestaurant(any());
+    }
 
+    @Test
+    public void update() throws Exception {
+            mvc.perform(patch("/restaurants/1004")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content("{\"name\": \"JOKER Bar\",\"address\":\"Busan\"}"))
+            .andExpect(status().isOk());
+
+            verify(restaurantService).updateRestaurant(1004L,"JOKER Bar","Busan");
     }
 }
