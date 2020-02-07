@@ -42,7 +42,7 @@ public class RestaurantControllerTest {
     @Test
     public void list() throws Exception {
         final List<Restaurant> restaurants = new ArrayList<>();
-        restaurants.add(new Restaurant(1004L,"Bob zip","Seoul"));
+        restaurants.add(Restaurant.builder().id(1234L).name("Bob zip").address("Seoul").build());
 
 
 
@@ -50,7 +50,7 @@ public class RestaurantControllerTest {
         mvc.perform(get("/restaurants"))
                 .andExpect(status().isOk())
                 .andExpect(content().string(
-                        containsString("\"id\":1004")
+                        containsString("\"id\":1234")
 
                 ))
                 .andExpect(content().string(
@@ -59,21 +59,23 @@ public class RestaurantControllerTest {
     }
     @Test
     public void detail() throws Exception{
-        final Restaurant restaurant1 = new Restaurant(1004L,"Bob Zip","Seoul");
+      //  final Restaurant restaurant1 = new Restaurant(1004L,"Bob Zip","Seoul");
+        Restaurant restaurant1 = Restaurant.builder().id(1234L).name("Bob Zip").address("Seoul").build();
+        
         restaurant1.setMenuItems(Arrays.asList());
 
-        final Restaurant restaurant2 = new Restaurant(2020L,"Cyber Food","Seoul");
+        final Restaurant restaurant2 = Restaurant.builder().id(2020L).name("Cyber Food").address("Busan").build();
      //   restaurant2.addMenuItem(new MenuItem("Kimchi"));
 
-        given(restaurantService.getRestaurant(1004L)).willReturn(restaurant1);
+        given(restaurantService.getRestaurant(1234L)).willReturn(restaurant1);
 
         given(restaurantService.getRestaurant(2020L)).willReturn(restaurant2);
 
 
-        mvc.perform(get("/restaurants/1004")).
+        mvc.perform(get("/restaurants/1234")).
                 andExpect(status().isOk())
                 .andExpect(content().string(
-                        containsString("\"id\":1004")
+                        containsString("\"id\":1234")
 
                 ))
                 .andExpect(content().string(
@@ -104,8 +106,8 @@ public class RestaurantControllerTest {
                 .name("BeRyong")
                 .address("Busan")
                 .build();
-         given(restaurantService.getRestaurant(1004L)).willReturn(restaurant);
 
+         given(restaurantService.getRestaurant(1234L)).willReturn(restaurant);
 
         mvc.perform(post("/restaurants")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -118,11 +120,11 @@ public class RestaurantControllerTest {
 
     @Test
     public void update() throws Exception {
-            mvc.perform(patch("/restaurants/1004")
+            mvc.perform(patch("/restaurants/1234")
             .contentType(MediaType.APPLICATION_JSON)
             .content("{\"name\": \"JOKER Bar\",\"address\":\"Busan\"}"))
             .andExpect(status().isOk());
 
-            verify(restaurantService).updateRestaurant(1004L,"JOKER Bar","Busan");
+            verify(restaurantService).updateRestaurant(1234L,"JOKER Bar","Busan");
     }
 }
