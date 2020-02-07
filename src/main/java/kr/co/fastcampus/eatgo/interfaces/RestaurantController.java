@@ -20,36 +20,41 @@ public class RestaurantController {
        // List<Restaurant> restaurants = new ArrayList<>();
 
      //   restaurants.add(new Restaurant(1004L,"Bob zip","Seoul"));
-      List<Restaurant> restaurants =restaurantService.getRestaurants();
-        return restaurants;
-    }
-    @GetMapping("/restaurants/{id}")
-    public Restaurant detail(@PathVariable("id") Long id)
-
-    {
-       Restaurant restaurant = restaurantService.getRestaurant(id);
-        //기본 정보 + 메뉴 정보
-
-        //Restaurant restaurant = restaurantService.getRestaurantById(id);
-        //Restaurant restaurant = restaurantRepository.findById(id);
-        //List<MenuItem> menuItems = menuItemRepository.findAllByRestaurantId(id);
-
-     //   restaurant.setMenuItems(menuItems);
-        return restaurant;
-    }
-   @PostMapping("/restaurants")
-    public ResponseEntity<?> create(@RequestBody Restaurant resource) throws URISyntaxException {
-        String name = resource.getName();
-        String address = resource.getAddress();
-        Restaurant restaurant = new Restaurant(name,address);
-        restaurantService.addRestaurant(restaurant);
-        URI location = new URI("/restaurants/" + restaurant.getId());
-        return ResponseEntity.created(location).body("{}");
+      final List<Restaurant> restaurants = restaurantService.getRestaurants();
+      return restaurants;
    }
+
+   @GetMapping("/restaurants/{id}")
+   public Restaurant detail(@PathVariable("id") final Long id)
+
+   {
+      final Restaurant restaurant = restaurantService.getRestaurant(id);
+      // 기본 정보 + 메뉴 정보
+
+      // Restaurant restaurant = restaurantService.getRestaurantById(id);
+      // Restaurant restaurant = restaurantRepository.findById(id);
+      // List<MenuItem> menuItems = menuItemRepository.findAllByRestaurantId(id);
+
+      // restaurant.setMenuItems(menuItems);
+      return restaurant;
+   }
+
+   @PostMapping("/restaurants")
+   public ResponseEntity<?> create(@RequestBody final Restaurant resource) throws URISyntaxException {
+    
+      final String name = resource.getName();
+      final String address = resource.getAddress();
+      Restaurant restaurant = Restaurant.builder().id(1234L).name(name).address(address).build();
+     // final Restaurant restaurant = new Restaurant(name, address);
+      restaurantService.addRestaurant(restaurant);
+      final URI location = new URI("/restaurants/" + restaurant.getId());
+      return ResponseEntity.created(location).body("{}");
+   }
+
    @PatchMapping("/restaurants/{id}")
-   public String update(@PathVariable("id") Long id, @RequestBody Restaurant resource){
-     String name =resource.getName();
-     String address = resource.getAddress();
+   public String update(@PathVariable("id") final Long id, @RequestBody final Restaurant resource) {
+      final String name = resource.getName();
+      final String address = resource.getAddress();
 
       restaurantService.updateRestaurant(id,name, address);
       return "{}";

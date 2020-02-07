@@ -34,34 +34,35 @@ public class Restaurant {
     private List<MenuItem> menuItems=new ArrayList<MenuItem>();
 
 
-    public Restaurant(String name, String address) {
+    public Restaurant(final String name, final String address) {
         this.address = address;
         this.name = name;
     }
 
-    public Restaurant(Long id, String name, String address) {
+    public Restaurant(final Long id, final String name, final String address) {
         this.id = id;
         this.name = name;
         this.address = address;
 
     }
 
-
     public String getInformation() {
-        return name + " in "+address;
+        return name + " in " + address;
     }
-    public void addMenuItem(MenuItem menuItem) {
+
+    public void addMenuItem(final MenuItem menuItem) {
 
         menuItems.add(menuItem);
     }
 
-    public void setMenuItems(List<MenuItem> menuItems) {
+    public void setMenuItems(final List<MenuItem> menuItems) {
         this.menuItems = new ArrayList<>();
-        for(MenuItem menuItem : menuItems){
+        for (final MenuItem menuItem : menuItems) {
             addMenuItem(menuItem);
         }
     }
-    public void updateInformation(String name, String address){
+
+    public void updateInformation(final String name, final String address) {
         this.name=name;
         this.address=address;
         

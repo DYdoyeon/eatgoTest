@@ -99,7 +99,13 @@ public class RestaurantControllerTest {
 
     @Test
     public void create() throws Exception {
-      //  Restaurant restaurant=new Restaurant(1234L,"BeRyong","Seoul");
+        Restaurant restaurant = Restaurant.builder()
+                .id(1234L)
+                .name("BeRyong")
+                .address("Busan")
+                .build();
+         given(restaurantService.getRestaurant(1004L)).willReturn(restaurant);
+
 
         mvc.perform(post("/restaurants")
                 .contentType(MediaType.APPLICATION_JSON)
