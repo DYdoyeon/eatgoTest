@@ -32,7 +32,7 @@ public class Restaurant {
     private Long id;
 
     @Transient
-    private List<MenuItem> menuItems=new ArrayList<MenuItem>();
+    private List<MenuItem> menuItems;
 
 
     public String getInformation() {

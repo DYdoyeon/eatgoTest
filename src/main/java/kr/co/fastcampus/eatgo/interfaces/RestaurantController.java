@@ -44,7 +44,7 @@ public class RestaurantController {
     
       final String name = resource.getName();
       final String address = resource.getAddress();
-      Restaurant restaurant = Restaurant.builder().id(1234L).name(name).address(address).build();
+      Restaurant restaurant = Restaurant.builder().id(1004L).name(name).address(address).build();
      // final Restaurant restaurant = new Restaurant(name, address);
       restaurantService.addRestaurant(restaurant);
       final URI location = new URI("/restaurants/" + restaurant.getId());

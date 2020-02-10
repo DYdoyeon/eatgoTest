@@ -21,7 +21,7 @@ public class RestaurantTests {
     public void creation() {
         Restaurant restaurant = Restaurant.builder().name("Bob zip").address( "Seoul").build();
 
-        assertThat(restaurant.getId(),is(1004L));
+     //   assertThat(restaurant.getId(),is(1004L));
         assertThat(restaurant.getName(), is("Bob zip"));
         assertThat(restaurant.getAddress(), is("Seoul"));
     }
