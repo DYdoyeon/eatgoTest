@@ -64,9 +64,7 @@ public class RestaurantControllerTest {
      //   restaurant2.addMenuItem(new MenuItem("Kimchi"));
 
         given(restaurantService.getRestaurant(1004L)).willReturn(restaurant1);
-
         given(restaurantService.getRestaurant(2020L)).willReturn(restaurant2);
-
 
         mvc.perform(get("/restaurants/1004")).
                 andExpect(status().isOk())
@@ -79,7 +77,6 @@ public class RestaurantControllerTest {
                 ))
              //   .andExpect(content().string(containsString("Kimchi")))
         ;;
-
         mvc.perform(get("/restaurants/2020")).
                 andExpect(status().isOk())
                 .andExpect(content().string(

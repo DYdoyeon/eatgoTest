@@ -85,8 +85,6 @@ public class RestaurantServiceTest {
         });
 
         Restaurant restaurant = Restaurant.builder().name("BeRyong").address("Busan").build();
-        
-
         Restaurant created = restaurantService.addRestaurant(restaurant);
 
         assertThat(created.getId(), is(1004L));
