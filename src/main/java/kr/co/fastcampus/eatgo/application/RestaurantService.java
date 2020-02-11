@@ -54,7 +54,6 @@ public class RestaurantService {
         Restaurant restaurant = restaurantRepository.findById(id).orElse(null);
         restaurant.updateInformation(name,address);
 
-      
         return restaurant;
 	}
 }

@@ -10,6 +10,8 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 
+import javax.validation.Valid;
+
 @CrossOrigin
 @RestController
 public class RestaurantController {
@@ -40,25 +42,26 @@ public class RestaurantController {
    }
 
    @PostMapping("/restaurants")
-   public ResponseEntity<?> create(@RequestBody final Restaurant resource) throws URISyntaxException {
+   public ResponseEntity<?> create(@Valid @RequestBody Restaurant resource) throws URISyntaxException {
     
-      final String name = resource.getName();
-      final String address = resource.getAddress();
-      Restaurant restaurant = Restaurant.builder().id(1004L).name(name).address(address).build();
-     // final Restaurant restaurant = new Restaurant(name, address);
-      restaurantService.addRestaurant(restaurant);
-      final URI location = new URI("/restaurants/" + restaurant.getId());
+      Restaurant restaurant = restaurantService.addRestaurant(
+         Restaurant.builder()
+            .name(resource.getName())
+            .address(resource.getAddress())
+            .build());      
+
+      URI location = new URI("/restaurants/" + restaurant.getId());
       return ResponseEntity.created(location).body("{}");
    }
 
    @PatchMapping("/restaurants/{id}")
-   public String update(@PathVariable("id") final Long id, @RequestBody final Restaurant resource) {
-      final String name = resource.getName();
-      final String address = resource.getAddress();
+   public String update(@PathVariable("id")  Long id,
+                        @Valid @RequestBody  Restaurant resource) {
+       String name = resource.getName();
+       String address = resource.getAddress();
 
       restaurantService.updateRestaurant(id,name, address);
       return "{}";
    }
-
    
 }

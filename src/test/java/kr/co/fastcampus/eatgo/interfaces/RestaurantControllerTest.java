@@ -40,8 +40,6 @@ public class RestaurantControllerTest {
         final List<Restaurant> restaurants = new ArrayList<>();
         restaurants.add(Restaurant.builder().id(1004L).name("Bob zip").address("Seoul").build());
 
-
-
         given(restaurantService.getRestaurants()).willReturn(restaurants);
         mvc.perform(get("/restaurants"))
                 .andExpect(status().isOk())
@@ -93,14 +91,18 @@ public class RestaurantControllerTest {
 
 
     @Test
-    public void create() throws Exception {
-        Restaurant restaurant = Restaurant.builder()
+    public void createWithValidData() throws Exception {
+       
+        given(restaurantService.addRestaurant(any())).will(invocation ->{
+           Restaurant restaurant = invocation.getArgument(0);
+           return   Restaurant.builder()
                 .id(1004L)
-                .name("BeRyong")
-                .address("Busan")
+                .name(restaurant.getName())
+                .address(restaurant.getAddress())
                 .build();
 
-         given(restaurantService.getRestaurant(1004L)).willReturn(restaurant);
+        });
+       
 
         mvc.perform(post("/restaurants")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -112,7 +114,18 @@ public class RestaurantControllerTest {
     }
 
     @Test
-    public void update() throws Exception {
+    public void createWithInValidData() throws Exception {
+     
+        mvc.perform(post("/restaurants")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(" {\"\" : \"\",\"\":\"\"}"))
+                .andExpect(status().isBadRequest());
+
+    }
+
+
+    @Test
+    public void updateWithValidData() throws Exception {
             mvc.perform(patch("/restaurants/1004")
             .contentType(MediaType.APPLICATION_JSON)
             .content("{\"name\": \"JOKER Bar\",\"address\":\"Busan\"}"))
@@ -120,4 +133,14 @@ public class RestaurantControllerTest {
 
             verify(restaurantService).updateRestaurant(1004L,"JOKER Bar","Busan");
     }
+
+    
+    @Test
+    public void updateWithInValidData() throws Exception {
+            mvc.perform(patch("/restaurants/1004")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content("{\"\": \"\",\"\":\"\"}"))
+            .andExpect(status().isBadRequest());
+        }
+       // public void updateWithoutDate() throw Exception{} 처럼 만들어서 테스트하면 좋아
 }
