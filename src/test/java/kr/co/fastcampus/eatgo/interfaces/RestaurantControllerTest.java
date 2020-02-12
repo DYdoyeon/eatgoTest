@@ -52,7 +52,7 @@ public class RestaurantControllerTest {
                 ));
     }
     @Test
-    public void detail() throws Exception{
+    public void detailWithExisted() throws Exception{
       //  final Restaurant restaurant1 = new Restaurant(1004L,"Bob Zip","Seoul");
         Restaurant restaurant1 = Restaurant.builder().id(1004L).name("Bob Zip").address("Seoul").build();
         
@@ -89,7 +89,15 @@ public class RestaurantControllerTest {
 
     }
 
+    @Test
+    public void detailWithNotExisted() throws Exception{
+        given(restaurantService.getRestaurant(100L)).willThrow( new RestaurantNotFoundException(100L));
+        mvc.perform(get("/restaurants/100"))
+                .andExpect(status().isNotFound())
+                .andExpect(content().string("{}"));
+    }
 
+ 
     @Test
     public void createWithValidData() throws Exception {
        

@@ -1,6 +1,8 @@
 package kr.co.fastcampus.eatgo.application;
 
 import kr.co.fastcampus.eatgo.domain.*;
+import kr.co.fastcampus.eatgo.interfaces.RestaurantNotFoundException;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -58,7 +60,7 @@ public class RestaurantServiceTest {
     }
 
     @Test
-    public void getRestaurant() {
+    public void getRestaurantWithExisted() {
         Restaurant restaurant = restaurantService.getRestaurant(1004L);
 
         MenuItem menuItem = restaurant.getMenuItems().get(0);
@@ -67,6 +69,12 @@ public class RestaurantServiceTest {
 
     }
 
+
+    @Test(expected = RestaurantNotFoundException.class)
+    public void getRestaurantNotWithExisted() {
+        Restaurant restaurant = restaurantService.getRestaurant(100L);
+
+    }
 
     @Test
     public void getRestaurants() {
