@@ -52,6 +52,10 @@ public class RestaurantControllerTest {
        given(restaurantService.getRestaurants()).willReturn(restaurants);
 
         //given(restaurantService.getRestaurants()).willReturn(restaurants);
+        final List<Restaurant> restaurants = new ArrayList<>();
+        restaurants.add(Restaurant.builder().id(1004L).name("Bob zip").address("Seoul").build());
+
+        given(restaurantService.getRestaurants()).willReturn(restaurants);
         mvc.perform(get("/restaurants"))
                 .andExpect(status().isOk())
                 .andExpect(content().string(
@@ -76,6 +80,11 @@ public class RestaurantControllerTest {
                 .name("Kimchi")
                 .build();
         restaurant1.setMenuItems(Arrays.asList( menuItem));
+    public void detailWithExisted() throws Exception{
+      //  final Restaurant restaurant1 = new Restaurant(1004L,"Bob Zip","Seoul");
+        Restaurant restaurant1 = Restaurant.builder().id(1004L).name("Bob Zip").address("Seoul").build();
+        
+        restaurant1.setMenuItems(Arrays.asList());
 
         final Restaurant restaurant2 = Restaurant.builder()
                 .id(2020L)
@@ -115,6 +124,13 @@ public class RestaurantControllerTest {
 
     }
 
+    @Test
+    public void detailWithNotExisted() throws Exception{
+        given(restaurantService.getRestaurant(100L)).willThrow( new RestaurantNotFoundException(100L));
+        mvc.perform(get("/restaurants/100"))
+                .andExpect(status().isNotFound())
+                .andExpect(content().string("{}"));
+    }
 
     @Test
     public void create() throws Exception {
@@ -127,6 +143,17 @@ public class RestaurantControllerTest {
                     .address(restaurant.getAddress())
                     .build();
         });
+    public void createWithValidData() throws Exception {
+       
+        given(restaurantService.addRestaurant(any())).will(invocation ->{
+           Restaurant restaurant = invocation.getArgument(0);
+           return   Restaurant.builder()
+                .id(1004L)
+                .name(restaurant.getName())
+                .address(restaurant.getAddress())
+                .build();
+
+        });
         mvc.perform(post("/restaurants")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(" {\"name\" : \"BeRyong\",\"address\":\"Busan\"}"))
@@ -138,6 +165,18 @@ public class RestaurantControllerTest {
 
     @Test
     public void update() throws Exception {
+    public void createWithInValidData() throws Exception {
+     
+        mvc.perform(post("/restaurants")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(" {\"\" : \"\",\"\":\"\"}"))
+                .andExpect(status().isBadRequest());
+
+    }
+
+
+    @Test
+    public void updateWithValidData() throws Exception {
             mvc.perform(patch("/restaurants/1004")
             .contentType(MediaType.APPLICATION_JSON)
             .content("{\"name\": \"JOKER Bar\",\"address\":\"Busan\"}"))
@@ -145,4 +184,12 @@ public class RestaurantControllerTest {
 
             verify(restaurantService).updateRestaurant(1004L,"JOKER Bar","Busan");
     }
+    @Test
+    public void updateWithInValidData() throws Exception {
+            mvc.perform(patch("/restaurants/1004")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content("{\"\": \"\",\"\":\"\"}"))
+            .andExpect(status().isBadRequest());
+        }
+       // public void updateWithoutDate() throw Exception{} 처럼 만들어서 테스트하면 좋아
 }

@@ -1,6 +1,8 @@
 package kr.co.fastcampus.eatgo.application;
 
 import kr.co.fastcampus.eatgo.domain.*;
+import kr.co.fastcampus.eatgo.interfaces.RestaurantNotFoundException;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -36,6 +38,7 @@ public class RestaurantServiceTest {
 
     private void mockMenuItemRepository() {
         List<MenuItem> menuItems = new ArrayList<>();
+        menuItems.add(MenuItem.builder().name("Kimchi").build());
         menuItems.add( MenuItem.builder()
                 .name("Kimchi")
                 .build());
@@ -60,7 +63,7 @@ public class RestaurantServiceTest {
     }
 
     @Test
-    public void getRestaurant() {
+    public void getRestaurantWithExisted() {
         Restaurant restaurant = restaurantService.getRestaurant(1004L);
 
         MenuItem menuItem = restaurant.getMenuItems().get(0);
@@ -69,6 +72,12 @@ public class RestaurantServiceTest {
 
     }
 
+
+    @Test(expected = RestaurantNotFoundException.class)
+    public void getRestaurantNotWithExisted() {
+        Restaurant restaurant = restaurantService.getRestaurant(100L);
+        assertThat(restaurant.getId(), is(1004L));
+    }
 
     @Test
     public void getRestaurants() {
@@ -87,11 +96,9 @@ public class RestaurantServiceTest {
 
 
         Restaurant restaurant = Restaurant.builder()
-                .name("BeRyong")
-                .address("Busan")
-                .build();
-
-
+        .name("BeRyong")
+        .address("Busan")
+        .build();
         Restaurant created = restaurantService.addRestaurant(restaurant);
 
         assertThat(created.getId(), is(1004L));
@@ -104,7 +111,6 @@ public class RestaurantServiceTest {
                 .address("Seoul")
                 .build();
         given(restaurantRepository.findById(1004L)).willReturn(Optional.of(restaurant));
-      
         restaurantService.updateRestaurant(1004L, "Sool zip", "Busan");
         assertThat(restaurant.getName(),is("Sool zip"));
         assertThat(restaurant.getAddress(),is("Busan"));
