@@ -4,16 +4,21 @@ import kr.co.fastcampus.eatgo.application.RestaurantService;
 import kr.co.fastcampus.eatgo.domain.*;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Spy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.mock.mockito.SpyBean;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static org.hamcrest.core.StringContains.containsString;
 import static org.mockito.ArgumentMatchers.any;
@@ -37,12 +42,16 @@ public class RestaurantControllerTest {
 
     @Test
     public void list() throws Exception {
-        final List<Restaurant> restaurants = new ArrayList<>();
-        restaurants.add(Restaurant.builder().id(1004L).name("Bob zip").address("Seoul").build());
+         List<Restaurant> restaurants = new ArrayList<>();
+         restaurants.add(Restaurant.builder()
+                .id(1004L)
+                .name("Bob zip")
+                .address("Seoul")
+                .build());
 
+       given(restaurantService.getRestaurants()).willReturn(restaurants);
 
-
-        given(restaurantService.getRestaurants()).willReturn(restaurants);
+        //given(restaurantService.getRestaurants()).willReturn(restaurants);
         mvc.perform(get("/restaurants"))
                 .andExpect(status().isOk())
                 .andExpect(content().string(
@@ -50,21 +59,35 @@ public class RestaurantControllerTest {
 
                 ))
                 .andExpect(content().string(
-                        containsString("\"name\":\"Bob zip")
+                        containsString("\"name\" : \"Bob zip\"")
+
+                 //       containsString(" {\"name\" : \"Bob zip\",\"address\":\"Seoul\"}")
+
                 ));
     }
     @Test
     public void detail() throws Exception{
-      //  final Restaurant restaurant1 = new Restaurant(1004L,"Bob Zip","Seoul");
-        Restaurant restaurant1 = Restaurant.builder().id(1004L).name("Bob Zip").address("Seoul").build();
-        
-        restaurant1.setMenuItems(Arrays.asList());
+        final Restaurant restaurant1 = Restaurant.builder()
+                .id(1004L)
+                .name("Bob Zip")
+                .address("Seoul")
+                .build();
+        MenuItem menuItem = MenuItem.builder()
+                .name("Kimchi")
+                .build();
+        restaurant1.setMenuItems(Arrays.asList( menuItem));
 
-        final Restaurant restaurant2 = Restaurant.builder().id(2020L).name("Cyber Food").address("Busan").build();
+        final Restaurant restaurant2 = Restaurant.builder()
+                .id(2020L)
+                .name("Cyber Food")
+                .address("Seoul")
+                .build();
      //   restaurant2.addMenuItem(new MenuItem("Kimchi"));
 
         given(restaurantService.getRestaurant(1004L)).willReturn(restaurant1);
+
         given(restaurantService.getRestaurant(2020L)).willReturn(restaurant2);
+
 
         mvc.perform(get("/restaurants/1004")).
                 andExpect(status().isOk())
@@ -77,6 +100,7 @@ public class RestaurantControllerTest {
                 ))
              //   .andExpect(content().string(containsString("Kimchi")))
         ;;
+
         mvc.perform(get("/restaurants/2020")).
                 andExpect(status().isOk())
                 .andExpect(content().string(
@@ -94,14 +118,15 @@ public class RestaurantControllerTest {
 
     @Test
     public void create() throws Exception {
-        Restaurant restaurant = Restaurant.builder()
-                .id(1004L)
-                .name("BeRyong")
-                .address("Busan")
-                .build();
-
-         given(restaurantService.getRestaurant(1004L)).willReturn(restaurant);
-
+      //  Restaurant restaurant=new Restaurant(1234L,"BeRyong","Seoul");
+        given(restaurantService.addRestaurant(any())).will(invocation ->{
+            Restaurant restaurant = invocation.getArgument(0);
+            return Restaurant.builder()
+                    .id(1004L)
+                    .name(restaurant.getName())
+                    .address(restaurant.getAddress())
+                    .build();
+        });
         mvc.perform(post("/restaurants")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(" {\"name\" : \"BeRyong\",\"address\":\"Busan\"}"))

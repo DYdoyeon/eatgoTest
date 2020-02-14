@@ -13,7 +13,6 @@ import java.util.List;
 
 @Entity
 @Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -21,33 +20,25 @@ public class Restaurant {
     private String name;
     private String address;
 
- //   private String regionName;
-//    private String categoryName;
-  //  private String category;
-
-
     @Id
     @GeneratedValue
     @Setter
     private Long id;
 
     @Transient
-    private List<MenuItem> menuItems;
+    private List<MenuItem> menuItems=new ArrayList<MenuItem>();
 
 
     public String getInformation() {
-        return name + " in " + address;
+        return name + " in "+address;
     }
 
 
-    public void setMenuItems(final List<MenuItem> menuItems) {
+    public void setMenuItems(List<MenuItem> menuItems) {
         this.menuItems = new ArrayList<>(menuItems);
-        //this.menuItems = menuItems는 쓰면 안됨
-        //setMenuItems 를 쓰는 곳에서 해당 함수를 호출해서 값을 바꿀 경우, 이것은 참조만 하기 때문에 값이 모두 변경이 되버림
-
+        //this.menuItems = menuItems를 쓸 경우, menuItem이 변경되면 모두 변경되기 때문에 그럼녀 안됨.
     }
-
-    public void updateInformation(final String name, final String address) {
+    public void updateInformation(String name, String address){
         this.name=name;
         this.address=address;
         

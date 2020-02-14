@@ -36,7 +36,9 @@ public class RestaurantServiceTest {
 
     private void mockMenuItemRepository() {
         List<MenuItem> menuItems = new ArrayList<>();
-        menuItems.add(MenuItem.builder().name("Kimchi").build());
+        menuItems.add( MenuItem.builder()
+                .name("Kimchi")
+                .build());
         given(menuItemRepository.findAllByRestaurantId(1004L)).willReturn(menuItems);
 
     }
@@ -77,22 +79,30 @@ public class RestaurantServiceTest {
 
     @Test
     public void addRestaurant() {
-
-        given(restaurantRepository.save(any())).will(invocation ->{
+        given(restaurantRepository.save(any())).will(invocation->{
             Restaurant restaurant = invocation.getArgument(0);
             restaurant.setId(1004L);
             return restaurant;
         });
 
-        Restaurant restaurant = Restaurant.builder().name("BeRyong").address("Busan").build();
+
+        Restaurant restaurant = Restaurant.builder()
+                .name("BeRyong")
+                .address("Busan")
+                .build();
+
+
         Restaurant created = restaurantService.addRestaurant(restaurant);
 
         assertThat(created.getId(), is(1004L));
     }
     @Test
     public void updateRestaurant(){
-        Restaurant restaurant = Restaurant.builder().id(1004L).name("Bob zip").address("Seoul").build();
-
+        Restaurant restaurant = Restaurant.builder()
+                .id(1004L)
+                .name("Bob zip")
+                .address("Seoul")
+                .build();
         given(restaurantRepository.findById(1004L)).willReturn(Optional.of(restaurant));
       
         restaurantService.updateRestaurant(1004L, "Sool zip", "Busan");
