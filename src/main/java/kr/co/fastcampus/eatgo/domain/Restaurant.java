@@ -8,6 +8,8 @@ import javax.persistence.Id;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotEmpty;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,8 +38,9 @@ public class Restaurant {
     private String address;
 
     @Transient
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private List<MenuItem> menuItems;
-
+    //두번째 어노테이션은 menuItems가 Null일 때는 안보이도록 하는거야
     public String getInformation() {
         return name + " in " + address;
     }

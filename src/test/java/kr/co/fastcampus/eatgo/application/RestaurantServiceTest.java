@@ -73,7 +73,7 @@ public class RestaurantServiceTest {
     @Test(expected = RestaurantNotFoundException.class)
     public void getRestaurantNotWithExisted() {
         Restaurant restaurant = restaurantService.getRestaurant(100L);
-
+        assertThat(restaurant.getId(), is(1004L));
     }
 
     @Test
