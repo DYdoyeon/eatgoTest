@@ -3,6 +3,7 @@ package kr.co.fastcampus.eatgo.domain;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
@@ -21,6 +22,7 @@ public class MenuItem {
     private Long id;
 
     @Setter
+
     private Long restaurantId;
     private String name;
 

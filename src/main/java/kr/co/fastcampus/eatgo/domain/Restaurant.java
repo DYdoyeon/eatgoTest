@@ -27,8 +27,7 @@ public class Restaurant {
     @Setter
     private Long id;
 
-    @Transient
-    private List<MenuItem> menuItems=new ArrayList<MenuItem>();
+
     @NotEmpty
     private String name;
 
@@ -39,13 +38,13 @@ public class Restaurant {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private List<MenuItem> menuItems;
     //두번째 어노테이션은 menuItems가 Null일 때는 안보이도록 하는거야
+
     public String getInformation() {
         return name + " in "+address;
     }
 
 
     public void setMenuItems(List<MenuItem> menuItems) {
-    public void setMenuItems(final List<MenuItem> menuItems) {
         this.menuItems = new ArrayList<>(menuItems);
         //this.menuItems = menuItems를 쓸 경우, menuItem이 변경되면 모두 변경되기 때문에 그럼녀 안됨.
     }

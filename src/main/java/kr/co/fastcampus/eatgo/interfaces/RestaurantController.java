@@ -25,33 +25,8 @@ public class RestaurantController {
       List<Restaurant> restaurants =restaurantService.getRestaurants();
         return restaurants;
     }
-    @GetMapping("/restaurants/{id}")
-    public Restaurant detail(@PathVariable("id") Long id)
 
-    {
-       Restaurant restaurant = restaurantService.getRestaurant(id);
-        //기본 정보 + 메뉴 정보
 
-        //Restaurant restaurant = restaurantService.getRestaurantById(id);
-        //Restaurant restaurant = restaurantRepository.findById(id);
-        //List<MenuItem> menuItems = menuItemRepository.findAllByRestaurantId(id);
-
-     //   restaurant.setMenuItems(menuItems);
-        return restaurant;
-    }
-   @PostMapping("/restaurants")
-    public ResponseEntity<?> create(@RequestBody Restaurant resource) throws URISyntaxException {
-       Restaurant restaurant = restaurantService.addRestaurant(
-                Restaurant.builder()
-                .name(resource.getName())
-                .address(resource.getAddress())
-                .build());
-
-        URI location = new URI("/restaurants/" + restaurant.getId());
-        return ResponseEntity.created(location).body("{}");
-       List<Restaurant> restaurants = restaurantService.getRestaurants();
-      return restaurants;
-   }
 
    @GetMapping("/restaurants/{id}")
    public Restaurant detail(@PathVariable("id") final Long id)
@@ -63,7 +38,7 @@ public class RestaurantController {
    }
 
    @PostMapping("/restaurants")
-   public ResponseEntity<?> create(@Valid @RequestBody Restaurant resource) throws URISyntaxException {
+   public ResponseEntity<?> create (@Valid @RequestBody Restaurant resource) throws URISyntaxException {
     
       Restaurant restaurant = restaurantService.addRestaurant(
          Restaurant.builder()
@@ -77,7 +52,8 @@ public class RestaurantController {
 
 
    @PatchMapping("/restaurants/{id}")
-   public String update(@PathVariable("id") Long id, @RequestBody Restaurant resource){
+   public String update(@PathVariable("id") Long id, @Valid @RequestBody Restaurant resource){
+
      String name =resource.getName();
      String address = resource.getAddress();
 
