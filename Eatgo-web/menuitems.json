@@ -1,9 +1,13 @@
 [
   {
-    "name" : "kimchi"
+    "id": 2,
+    "name" : "Kim chi"
   },
-
   {
-    "name" : "Gukbob"
+    "id": 3,
+    "destroy" : true
   }
+  ,{
+  "name": "Gokbab"
+}
 ]
