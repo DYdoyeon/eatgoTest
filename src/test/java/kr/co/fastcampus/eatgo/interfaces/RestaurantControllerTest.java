@@ -56,11 +56,11 @@ public class RestaurantControllerTest {
 
                 ))
                 .andExpect(content().string(
-                        containsString("\"name\" : \"Bob zip\"")
-
-                 //       containsString(" {\"name\" : \"Bob zip\",\"address\":\"Seoul\"}")
+                        containsString( "\"name\":\"Bob zip")
 
                 ));
+
+
     }
     @Test
     public void detailWithExisted() throws Exception{
