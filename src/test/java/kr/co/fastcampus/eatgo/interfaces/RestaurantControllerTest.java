@@ -44,6 +44,7 @@ public class RestaurantControllerTest {
     public void list() throws Exception {
          List<Restaurant> restaurants = new ArrayList<>();
 
+
         //given(restaurantService.getRestaurants()).willReturn(restaurants);
 
         restaurants.add(Restaurant.builder().id(1004L).name("Bob zip").address("Seoul").build());
@@ -114,8 +115,6 @@ public class RestaurantControllerTest {
                 .andExpect(status().isNotFound())
                 .andExpect(content().string("{}"));
     }
-
-
     @Test
     public void createWithValidData() throws Exception {
        
@@ -128,6 +127,7 @@ public class RestaurantControllerTest {
                 .build();
 
         });
+
         mvc.perform(post("/restaurants")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(" {\"name\" : \"BeRyong\",\"address\":\"Busan\"}"))

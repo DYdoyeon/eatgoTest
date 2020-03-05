@@ -1,6 +1,5 @@
 package kr.co.fastcampus.eatgo.domain;
 
-
 import lombok.*;
 
 import javax.persistence.Entity;
@@ -13,7 +12,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.util.ArrayList;
 import java.util.List;
-
 
 @Entity
 @Getter
@@ -39,9 +37,11 @@ public class Restaurant {
     private List<MenuItem> menuItems;
     //두번째 어노테이션은 menuItems가 Null일 때는 안보이도록 하는거야
 
+
     public String getInformation() {
         return name + " in "+address;
     }
+
 
 
     public void setMenuItems(List<MenuItem> menuItems) {

@@ -33,8 +33,7 @@ public class MenuItemServiceTests {
   
        menuItems.add(MenuItem.builder().name("kimchi").build());
        menuItems.add(MenuItem.builder().name("Gokbab").build());
-      
-      
+
        menuItemService.bulkUpdate(1L,menuItems); 
         verify(menuItemRepository,times(2)).save(any());
     }

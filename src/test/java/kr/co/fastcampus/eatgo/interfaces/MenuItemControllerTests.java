@@ -40,7 +40,9 @@ public class MenuItemControllerTests{
             .content("[]"))
             .andExpect(status().isOk());
 
-         //verify(menuItemService).bulkUpdate(eq(1L),any());
+
+         //verify(menuItemService).bulkUpdate(eq(1L),any());c
+        verify(menuItemService).bulkUpdate(eq(1L),any());
     }
 
 }
