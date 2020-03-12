@@ -49,7 +49,6 @@ public class MenuItemServiceTests {
         given(menuItemRepository.findAllByRestaurantId(1004L))
                 .willReturn(mockMenuItems);
 
-
         List<MenuItem> menuItems = menuItemService.getMenuItems(1004L);
         MenuItem menuItem = menuItems.get(0);
         assertThat(menuItem.getName(),is("Kimchi"));
